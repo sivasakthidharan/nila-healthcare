@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin:["http://nila-healthcare-4hb3wnonv-sivasakthidharans-projects.vercel.app",
+  origin:["http://nila-health-43caklq1f-sivasakthidharans-projects.vercel.app",
     "http://localhost:5173" ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
