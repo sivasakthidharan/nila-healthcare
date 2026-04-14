@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import  pool  from "../db";
+//import  pool  from "../db";
 import jwt from "jsonwebtoken";
 
 const generateOTP = () => {
@@ -21,13 +21,13 @@ export const requestOTP = async (req: Request, res: Response) => {
   const otp = generateOTP();
   const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
-  await pool.query(
-    `INSERT INTO admins (phone, otp, otp_expiry)
-     VALUES ($1,$2,$3)
-     ON CONFLICT (phone)
-     DO UPDATE SET otp=$2, otp_expiry=$3`,
-    [phone, otp, expiry]
-  );
+  // await pool.query(
+  //   `INSERT INTO admins (phone, otp, otp_expiry)
+  //    VALUES ($1,$2,$3)
+  //    ON CONFLICT (phone)
+  //    DO UPDATE SET otp=$2, otp_expiry=$3`,
+  //   [phone, otp, expiry]
+  // );
 
   console.log("OTP  is 123456", otp); // For testing
 
