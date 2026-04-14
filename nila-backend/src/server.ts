@@ -216,7 +216,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/api/experts", expertRoutes);
+// app.use("/api/experts", expertRoutes);
+app.use("/experts", expertRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("Backend running ✅");
