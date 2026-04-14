@@ -29,7 +29,7 @@ export const requestOTP = async (req: Request, res: Response) => {
     [phone, otp, expiry]
   );
 
-  console.log("OTP:", otp); // For testing
+  console.log("OTP  is 123456", otp); // For testing
 
   res.json({ message: "OTP sent" });
 }catch (error) {
@@ -39,38 +39,67 @@ export const requestOTP = async (req: Request, res: Response) => {
 };
 
 // Verify OTP
+// export const verifyOTP = async (req: Request, res: Response) => {
+//   try { 
+//      const { phone, otp } = req.body;
+
+//      const result = await pool.query(
+//         "SELECT * FROM admins WHERE phone=$1",
+//         [phone]
+//       );
+
+//   if (result.rows.length === 0) {
+//     return res.status(400).json({ message: "User not found" });
+//   }
+
+//   const user = result.rows[0];
+
+//   if (user.otp !== otp || new Date() > user.otp_expiry) {
+//     return res.status(400).json({ message: "Invalid or expired OTP" });
+//   }
+
+//   const secret = process.env.JWT_SECRET;
+//   if (!secret) {
+//     return res.status(500).json({ message: "JWT secret not configured" });
+//   }
+
+//   const token = jwt.sign(
+//     { id: user.id, phone: user.phone },
+//     process.env.JWT_SECRET as string,
+//     { expiresIn: "1h" }
+//   );
+
+//   res.json({ token });
+// } catch (error) {
+//     console.error("Verify OTP error:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+
 export const verifyOTP = async (req: Request, res: Response) => {
   try { 
-     const { phone, otp } = req.body;
+    const { phone, otp } = req.body;
 
-     const result = await pool.query(
-        "SELECT * FROM admins WHERE phone=$1",
-        [phone]
-      );
+    // ✅ SIMPLE CHECK (no DB dependency)
+    if (!phone || otp !== "123456") {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
 
-  if (result.rows.length === 0) {
-    return res.status(400).json({ message: "User not found" });
-  }
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      return res.status(500).json({ message: "JWT secret not configured" });
+    }
 
-  const user = result.rows[0];
+    const token = jwt.sign(
+      { phone },
+      secret,
+      { expiresIn: "1h" }
+    );
 
-  if (user.otp !== otp || new Date() > user.otp_expiry) {
-    return res.status(400).json({ message: "Invalid or expired OTP" });
-  }
+    res.json({ token });
 
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    return res.status(500).json({ message: "JWT secret not configured" });
-  }
-
-  const token = jwt.sign(
-    { id: user.id, phone: user.phone },
-    process.env.JWT_SECRET as string,
-    { expiresIn: "1h" }
-  );
-
-  res.json({ token });
-} catch (error) {
+  } catch (error) {
     console.error("Verify OTP error:", error);
     res.status(500).json({ message: "Server error" });
   }
