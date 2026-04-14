@@ -207,6 +207,12 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.routes";
 import expertRoutes from "./routes/expert.routes";
+import userRoutes from "./routes/users.routes";
+ import dashboardRoutes from "./routes/dashboard.routes";
+ import appointmentsRoutes from "./routes/appointments.routes";
+ import paymentRoutes from "./routes/payment.routes";
+ import otpRoutes from "./routes/otp.routes";
+
 
 dotenv.config();
 
@@ -218,6 +224,14 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/api/experts", expertRoutes);
 
+  app.use("/api/users", userRoutes);
+  app.use("/api/dashboard", dashboardRoutes);
+  app.use("/api/appointments", appointmentsRoutes);
+  app.use("/api/payment", paymentRoutes);
+// // app.use("/api/otp", otpRoutes);
+
+ app.use("/api/experts", expertRoutes);
+ app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("Backend running ✅");
