@@ -206,6 +206,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.routes";
+import expertRoutes from "./routes/expert.routes";
 
 dotenv.config();
 
@@ -215,6 +216,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/api/experts", expertRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend running ✅");
