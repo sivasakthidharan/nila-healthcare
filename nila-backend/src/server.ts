@@ -26,9 +26,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));   // fix preflight request
 
+app.use(cors());
+
 //app.use(cors());
 
 app.use(express.json());
+
+app.post("/auth/request-otp", (req, res) => {
+  console.log("OTP HIT");
+  res.json({ message: "OTP route working" });
+});
+
+
 app.use("/api/users", userRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/appointments", appointmentsRoutes);
