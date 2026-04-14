@@ -1,67 +1,60 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+// import express from "express";
+// import cors from "cors";
+// import dotenv from "dotenv";
 
-import authRoutes from "./routes/auth.routes";
-import expertRoutes from "./routes/expert.routes";
-import userRoutes from "./routes/users.routes";
-import dashboardRoutes from "./routes/dashboard.routes";
-import appointmentsRoutes from "./routes/appointments.routes";
-import paymentRoutes from "./routes/payment.routes";
-import otpRoutes from "./routes/otp.routes";
-import pool from "./db";  
+// import authRoutes from "./routes/auth.routes";
+// import expertRoutes from "./routes/expert.routes";
+// import userRoutes from "./routes/users.routes";
+// import dashboardRoutes from "./routes/dashboard.routes";
+// import appointmentsRoutes from "./routes/appointments.routes";
+// import paymentRoutes from "./routes/payment.routes";
+// import otpRoutes from "./routes/otp.routes";
+// import pool from "./db";  
 
-dotenv.config();
+// dotenv.config();
 
-const app = express();
+// const app = express();
 
-const corsOptions = {
-  origin:["https://nila-healthcare.vercel.app",
-    "http://localhost:5173" ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-};
+// const corsOptions = {
+//   origin:["https://nila-healthcare.vercel.app",
+//     "http://localhost:5173" ],
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true
+// };
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));   // fix preflight request
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions));   // fix preflight request
+
+// app.use(express.json());
+
+// app.use("/api/users", userRoutes);
+// app.use("/api/dashboard", dashboardRoutes);
+// app.use("/api/appointments", appointmentsRoutes);
+// app.use("/api/payment", paymentRoutes);
+// // app.use("/api/otp", otpRoutes);
+
+// // Add this test route
+// app.get("/test", (req, res) => {
+//   res.json({ message: "Server is working!" });
+// });
+
+// app.use("/auth", authRoutes);
+// app.use("/experts", expertRoutes);
+
+// app.get("/", (req, res) => {
+//   res.send("Backend is running 🚀");
+// });
+// app.use("/api/experts", expertRoutes);
+// app.use("/uploads", express.static("uploads"));
+
+// const PORT = process.env.PORT || 5000;
+
+// app.listen(PORT, async () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
 
 
-//app.use(cors());
-
-app.use(express.json());
-
-app.post("/auth/request-otp", (req, res) => {
-  console.log("OTP HIT");
-  res.json({ message: "OTP route working" });
-});
-
-
-app.use("/api/users", userRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/appointments", appointmentsRoutes);
-app.use("/api/payment", paymentRoutes);
-// app.use("/api/otp", otpRoutes);
-
-// Add this test route
-app.get("/test", (req, res) => {
-  res.json({ message: "Server is working!" });
-});
-
-app.use("/auth", authRoutes);
-app.use("/experts", expertRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
-});
-app.use("/api/experts", expertRoutes);
-app.use("/uploads", express.static("uploads"));
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
 
 // app.listen(5000, () => {
@@ -207,3 +200,28 @@ app.listen(PORT, async () => {
 //     console.error("Error creating table:", err);
 //   }
 // });
+
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+
+import authRoutes from "./routes/auth.routes";
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use("/auth", authRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Backend running ✅");
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
