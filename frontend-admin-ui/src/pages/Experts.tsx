@@ -1055,7 +1055,7 @@ export default function Experts() {
   const fetchExperts = async () => {
     try {
       console.log("Fetching experts...")
-      const res = await fetch(`${API_URL}/experts`)
+      const res = await fetch(`${API_URL}/api/experts`)
       console.log("Response status:", res.status)
 
       if (!res.ok) {
