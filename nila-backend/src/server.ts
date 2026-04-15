@@ -213,11 +213,17 @@ import userRoutes from "./routes/users.routes";
  import paymentRoutes from "./routes/payment.routes";
  import otpRoutes from "./routes/otp.routes";
 
+import pool from "./db";   // ✅ ADD HERE
+
+
 
 dotenv.config();
 
 const app = express();
 
+  pool.connect()
+  .then(() => console.log("✅ DB connected"))
+  .catch(err => console.error("❌ DB connection failed:", err));
 
 const corsOptions = {
    origin:["https://nila-healthcare.vercel.app",
