@@ -40,7 +40,7 @@ router.post("/",  upload.single("avatar"), async (req, res) => {
       `INSERT INTO experts (name,title,email,phone,specialization,rating,patients,status,joined_date, next_available, avatar)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, $11)
        RETURNING *`,
-      [name, title, email, phone, specialty, rating , patients, status || "active" , joinedDate  ? new Date(joinedDate) : null, nextAvailable  ? new Date(nextAvailable) : null, filePath  ]
+      [name, title, email, phone, specialty, rating ? parseFloat(rating) : 0, patients ? parseInt(patients) : 0, status || "active" , joinedDate  ? new Date(joinedDate) : null, nextAvailable  ? new Date(nextAvailable) : null, filePath  ]
     )
 
     res.json(result.rows[0]);
