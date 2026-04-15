@@ -201,56 +201,121 @@
 //   }
 // });
 
+// import express from "express";
+// import cors from "cors";
+// import dotenv from "dotenv";
+
+// import authRoutes from "./routes/auth.routes";
+// import expertRoutes from "./routes/expert.routes";
+// import userRoutes from "./routes/users.routes";
+//  import dashboardRoutes from "./routes/dashboard.routes";
+//  import appointmentsRoutes from "./routes/appointments.routes";
+//  import paymentRoutes from "./routes/payment.routes";
+//  import otpRoutes from "./routes/otp.routes";
+
+// import pool from "./db";  
+
+// dotenv.config();
+
+// const app = express();
+
+//   pool.connect()
+//   .then(() => console.log("✅ DB connected"))
+//   .catch(err => console.error("❌ DB connection failed:", err));
+
+// // const corsOptions = {
+// //    origin:["https://nila-healthcare.vercel.app",
+// //      "http://localhost:5173" ],
+// //    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+// //    allowedHeaders: ["Content-Type", "Authorization"],
+// //    credentials: true
+// //  };
+
+
+//    //app.options("*", cors(corsOptions));   // fix preflight request
+// app.use(cors(corsOptions));
+
+// //app.use(cors());
+// app.use(express.json());
+
+// app.use("/auth", authRoutes);
+// app.use("/api/experts", expertRoutes);
+
+//   app.use("/api/users", userRoutes);
+//   app.use("/api/dashboard", dashboardRoutes);
+//   app.use("/api/appointments", appointmentsRoutes);
+//   app.use("/api/payment", paymentRoutes);
+// // // app.use("/api/otp", otpRoutes);
+
+//  app.use("/uploads", express.static("uploads"));
+
+// app.get("/", (req, res) => {
+//   res.send("Backend running ✅");
+// });
+
+// const PORT = process.env.PORT || 5000;
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
+
+
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import pool from "./db";
 
 import authRoutes from "./routes/auth.routes";
 import expertRoutes from "./routes/expert.routes";
 import userRoutes from "./routes/users.routes";
- import dashboardRoutes from "./routes/dashboard.routes";
- import appointmentsRoutes from "./routes/appointments.routes";
- import paymentRoutes from "./routes/payment.routes";
- import otpRoutes from "./routes/otp.routes";
-
-import pool from "./db";   // ✅ ADD HERE
-
-
+import dashboardRoutes from "./routes/dashboard.routes";
+import appointmentsRoutes from "./routes/appointments.routes";
+import paymentRoutes from "./routes/payment.routes";
 
 dotenv.config();
 
 const app = express();
 
-  pool.connect()
+// ✅ DB test
+pool.connect()
   .then(() => console.log("✅ DB connected"))
   .catch(err => console.error("❌ DB connection failed:", err));
 
+// ✅ CORS FIX
 const corsOptions = {
-   origin:["https://nila-healthcare.vercel.app",
-     "http://localhost:5173" ],
-   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-   allowedHeaders: ["Content-Type", "Authorization"],
-   credentials: true
- };
+  origin: [
+    "https://nila-healthcare.vercel.app",
+    "http://localhost:5173"
+  ],
+  credentials: true,
+};
 
-   app.options("*", cors(corsOptions));   // fix preflight request
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
-app.use(cors());
+// ✅ BODY PARSER FIX
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// ✅ ROUTES
 app.use("/auth", authRoutes);
 app.use("/api/experts", expertRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/appointments", appointmentsRoutes);
+app.use("/api/payment", paymentRoutes);
 
-  app.use("/api/users", userRoutes);
-  app.use("/api/dashboard", dashboardRoutes);
-  app.use("/api/appointments", appointmentsRoutes);
-  app.use("/api/payment", paymentRoutes);
-// // app.use("/api/otp", otpRoutes);
-
- app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("Backend running ✅");
+});
+
+// ✅ GLOBAL ERROR HANDLER
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error("🔥 GLOBAL ERROR:", err);
+  res.status(500).json({ message: err.message || "Server crashed" });
 });
 
 const PORT = process.env.PORT || 5000;
