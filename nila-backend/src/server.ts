@@ -284,10 +284,12 @@ pool.connect()
 
 // ✅ CORS FIX
 const corsOptions = {
-  origin: [
+  origin: ["https://nila-healthcare-7yf6xhrrx-sivasakthidharans-projects.vercel.app",
     "https://nila-healthcare.vercel.app",
     "http://localhost:5173"
   ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
 
