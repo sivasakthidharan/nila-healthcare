@@ -4,11 +4,14 @@ import  pool  from "../db";
 export const getExperts = async (req: Request, res: Response) => {
      //console.log("getExperts function called"); // Add this line
   try {
+        console.log("🔥 DB QUERY START");
+
     const result = await pool.query("SELECT * FROM experts ORDER BY id ASC");
      // console.log("Query result:", result.rows); // Add this line
     res.json(result.rows);
   } catch (error) {
     console.error(error);
+    console.error("❌ DB ERROR FULL:", error); 
     res.status(500).json({ message: "Server error" });
   }
 };

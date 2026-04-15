@@ -218,6 +218,17 @@ dotenv.config();
 
 const app = express();
 
+
+const corsOptions = {
+   origin:["https://nila-healthcare.vercel.app",
+     "http://localhost:5173" ],
+   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+   allowedHeaders: ["Content-Type", "Authorization"],
+   credentials: true
+ };
+
+   app.options("*", cors(corsOptions));   // fix preflight request
+
 app.use(cors());
 app.use(express.json());
 
@@ -230,7 +241,6 @@ app.use("/api/experts", expertRoutes);
   app.use("/api/payment", paymentRoutes);
 // // app.use("/api/otp", otpRoutes);
 
- app.use("/api/experts", expertRoutes);
  app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
