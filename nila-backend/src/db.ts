@@ -20,11 +20,11 @@ const pool = new Pool({
 export default pool;
 
 // Test database connection
-pool.connect((err, client, release) => {
-  if (err) {
-    return console.error('Error acquiring client', err.stack);
-  }
-  console.log('Database connected successfully');
-  release();
-});
+// pool.connect((err, client, release) => {
+//   if (err) {
+//     return console.error('Error acquiring client', err.stack);
+//   }
+//   console.log('Database connected successfully');
+//   release();
+// });
 
