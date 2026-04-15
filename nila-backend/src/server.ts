@@ -308,6 +308,19 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/appointments", appointmentsRoutes);
 app.use("/api/payment", paymentRoutes);
 
+
+// ✅ ADD HERE 👇 (IMPORTANT LOCATION)
+app.get("/test-db", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json(result.rows);
+  } catch (err: any) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
