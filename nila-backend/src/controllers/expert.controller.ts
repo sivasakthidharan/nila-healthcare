@@ -8,6 +8,8 @@ export const getExperts = async (req: Request, res: Response) => {
 
     const result = await pool.query("SELECT * FROM experts ORDER BY id ASC");
      // console.log("Query result:", result.rows); // Add this line
+     console.log("✅ DATA:", result.rows);
+
     res.json(result.rows);
   } catch (error :any ) {
     console.error(error);
