@@ -19,7 +19,8 @@ router.get("/activity", async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching activity logs:", error);
-    res.status(500).json({ message: "Server error" });
+    //res.status(500).json({ message: "Server error" });
+    res.json([]); 
   }
 });
 

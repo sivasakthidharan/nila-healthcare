@@ -1,31 +1,75 @@
 import { Request, Response } from "express";
 import  pool  from "../db";
 
+// export const getDashboardStats = async (req: Request, res: Response) => {
+//   try {
+//         console.log("🔥 Dashboard stats API called")
+
+//     const totalUsers = await pool.query("SELECT COUNT(*) FROM users");
+//     const totalExperts = await pool.query("SELECT COUNT(*) FROM experts");
+
+  
+
+//     const todayAppointments = await pool.query(`
+//       SELECT COUNT(*) FROM appointments
+//       WHERE appointment_date = CURRENT_DATE
+//     `);
+
+//     const totalRevenue = await pool.query(`
+//       SELECT COALESCE(SUM(amount),0) AS revenue FROM payments
+//     `);
+
+//     res.json({
+//       totalUsers: totalUsers.rows[0].count,
+//       totalExperts: totalExperts.rows[0].count,
+//       todayAppointments: todayAppointments.rows[0].count,
+//      // revenue: totalRevenue.rows[0].coalesce
+//       revenue: totalRevenue.rows[0].revenue
+//     });
+
+//   } catch (error) {
+//     console.error("Dashboard error:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 export const getDashboardStats = async (req: Request, res: Response) => {
   try {
+    console.log("🔥 Dashboard stats API called");
+
     const totalUsers = await pool.query("SELECT COUNT(*) FROM users");
     const totalExperts = await pool.query("SELECT COUNT(*) FROM experts");
 
-    const todayAppointments = await pool.query(`
-      SELECT COUNT(*) FROM appointments
-      WHERE appointment_date = CURRENT_DATE
-    `);
+    let todayAppointments = { rows: [{ count: 0 }] };
+    let totalRevenue = { rows: [{ revenue: 0 }] };
 
-    const totalRevenue = await pool.query(`
-      SELECT COALESCE(SUM(amount),0) AS revenue FROM payments
-    `);
+    try {
+      todayAppointments = await pool.query(`
+        SELECT COUNT(*) FROM appointments
+        WHERE appointment_date = CURRENT_DATE
+      `);
+    } catch (err) {
+      console.error("⚠ appointments table missing");
+    }
+
+    try {
+      totalRevenue = await pool.query(`
+        SELECT COALESCE(SUM(amount),0) AS revenue FROM payments
+      `);
+    } catch (err) {
+      console.error("⚠ payments table missing");
+    }
 
     res.json({
       totalUsers: totalUsers.rows[0].count,
       totalExperts: totalExperts.rows[0].count,
       todayAppointments: todayAppointments.rows[0].count,
-     // revenue: totalRevenue.rows[0].coalesce
-      revenue: totalRevenue.rows[0].revenue
+      revenue: totalRevenue.rows[0].revenue,
     });
 
-  } catch (error) {
-    console.error("Dashboard error:", error);
-    res.status(500).json({ message: "Server error" });
+  } catch (error: any) {
+    console.error("❌ Dashboard error FULL:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -49,7 +93,8 @@ export const getUpcomingAppointments = async (req: Request, res: Response) => {
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching upcoming:", error);
-    res.status(500).json({ message: "Server error" });
+    //res.status(500).json({ message: "Server error" });
+    res.json([]); 
   }
 };
 
@@ -89,6 +134,7 @@ export const getAppointmentsOverview = async (req: Request, res: Response) => {
     res.json(result.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    //res.status(500).json({ message: "Server error" });
+    res.json([]); 
   }
 };
