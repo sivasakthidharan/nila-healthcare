@@ -614,10 +614,10 @@ const handleExport = () => {
               onChange={(e) => setSelectedDate(e.target.value)}
               className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
+              <option value="all">All Dates</option>
               <option value="today">Today</option>
               <option value="upcoming">Upcoming</option>
               <option value="past">Past</option>
-              <option value="all">All Dates</option>
             </select>
           </div>
         </div>
