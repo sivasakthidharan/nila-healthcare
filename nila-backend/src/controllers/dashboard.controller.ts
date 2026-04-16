@@ -33,42 +33,90 @@ import  pool  from "../db";
 //   }
 // };
 
+
+
+
+// export const getDashboardStats = async (req: Request, res: Response) => {
+//   try {
+//     console.log("🔥 Dashboard stats API called");
+
+//     const totalUsers = await pool.query("SELECT COUNT(*) FROM users");
+//     const totalExperts = await pool.query("SELECT COUNT(*) FROM experts");
+
+//     let todayAppointments = { rows: [{ count: 0 }] };
+//     let totalRevenue = { rows: [{ revenue: 0 }] };
+
+//     try {
+//       todayAppointments = await pool.query(`
+//         SELECT COUNT(*) FROM appointments
+//         WHERE appointment_date = CURRENT_DATE
+//       `);
+//     } catch (err) {
+//       console.error("⚠ appointments table missing");
+//     }
+
+//     try {
+//       totalRevenue = await pool.query(`
+//         SELECT COALESCE(SUM(amount),0) AS revenue FROM payments
+//       `);
+//     } catch (err) {
+//       console.error("⚠ payments table missing");
+//     }
+
+//     res.json({
+//       totalUsers: totalUsers.rows[0].count,
+//       totalExperts: totalExperts.rows[0].count,
+//       todayAppointments: todayAppointments.rows[0].count,
+//       revenue: totalRevenue.rows[0].revenue,
+//     });
+
+//   } catch (error: any) {
+//     console.error("❌ Dashboard error FULL:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+
 export const getDashboardStats = async (req: Request, res: Response) => {
   try {
     console.log("🔥 Dashboard stats API called");
 
-    const totalUsers = await pool.query("SELECT COUNT(*) FROM users");
-    const totalExperts = await pool.query("SELECT COUNT(*) FROM experts");
-
+    let totalUsers = { rows: [{ count: 0 }] };
+    let totalExperts = { rows: [{ count: 0 }] };
     let todayAppointments = { rows: [{ count: 0 }] };
     let totalRevenue = { rows: [{ revenue: 0 }] };
 
     try {
+      totalUsers = await pool.query("SELECT COUNT(*) FROM admins");
+    } catch {}
+
+    try {
+      totalExperts = await pool.query("SELECT COUNT(*) FROM experts");
+    } catch {}
+
+    try {
       todayAppointments = await pool.query(`
-        SELECT COUNT(*) FROM appointments
+        SELECT COUNT(*) FROM clinic_appointments
         WHERE appointment_date = CURRENT_DATE
       `);
-    } catch (err) {
-      console.error("⚠ appointments table missing");
-    }
+    } catch {}
 
+    // If payments table not created → keep 0
     try {
       totalRevenue = await pool.query(`
         SELECT COALESCE(SUM(amount),0) AS revenue FROM payments
       `);
-    } catch (err) {
-      console.error("⚠ payments table missing");
-    }
+    } catch {}
 
     res.json({
-      totalUsers: totalUsers.rows[0].count,
-      totalExperts: totalExperts.rows[0].count,
-      todayAppointments: todayAppointments.rows[0].count,
-      revenue: totalRevenue.rows[0].revenue,
+      totalUsers: Number(totalUsers.rows[0].count),
+      totalExperts: Number(totalExperts.rows[0].count),
+      todayAppointments: Number(todayAppointments.rows[0].count),
+      revenue: Number(totalRevenue.rows[0].revenue),
     });
 
   } catch (error: any) {
-    console.error("❌ Dashboard error FULL:", error);
+    console.error("❌ Dashboard error:", error);
     res.status(500).json({ message: error.message });
   }
 };
