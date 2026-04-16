@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Calendar, Clock, User, UserCircle, Filter, Search, Plus, CheckCircle, XCircle, Clock as ClockIcon, MoreVertical, Download } from 'lucide-react'
 import Card from '../components/Card'
 import { useAuth } from '../contexts/AuthContext'
+import { useLocation } from 'react-router-dom'; 
 
 type AppointmentStatus = 'scheduled' | 'confirmed' | 'completed' | 'cancelled' | 'no-show'
 type AppointmentType = 'therapy' | 'consultation' | 'follow-up' | 'assessment'
@@ -89,6 +90,19 @@ const fetchAppointments = async () => {
     useEffect(() => {
     fetchAppointments()
   }, []);
+
+
+   const location = useLocation(); 
+   // Auto-open modal when we come from an expert card
+  useEffect(() => {
+    if (location.state && (location.state as any).selectedTherapist) {
+      const therapistName = (location.state as any).selectedTherapist;
+      setFormData(prev => ({ ...prev, therapistName }));
+      setShowModal(true);
+      // Clear the location state so it doesn't re-trigger on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
 
    // ✅ Handle form input
