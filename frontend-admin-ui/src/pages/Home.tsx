@@ -46,12 +46,9 @@ const [activeFaq, setActiveFaq] = useState<number | null>(null);
   
   return (
     <>
-
-      {/* <div className="h-[500px] flex items-center justify-center"> */}
         <SupportSection />
-      {/* </div> */}
-      <HomeExperts />
-       <FAQ />
+        <HomeExperts />
+        <FAQ />
     </>
   );
 }

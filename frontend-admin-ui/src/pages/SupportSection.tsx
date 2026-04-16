@@ -76,11 +76,11 @@ export default function SupportSection() {
       {/* Single centered container for everything */}
       <div className="max-w-6xl mx-auto px-6">
         {/* VIDEO */}
-        <div className="mb-10 rounded-xl overflow-hidden shadow-lg">
+        <div className="mb-10 rounded-xl overflow-hidden shadow-lg aspect-video">
           <video
-            className="w-full h-auto"
+            className="w-full h-full object-cover"
             controls
-            poster="/video-poster.jpg"
+            // poster="/video-poster.jpg"
             preload="metadata"
           >
             <source src="/web-re-01.mp4" type="video/mp4" />
@@ -113,8 +113,7 @@ export default function SupportSection() {
             <Search className="text-gray-400 mr-2" />
             <input
               type="text"
-              placeholder="Search by Therapist name..."
-              className="w-full outline-none text-sm"
+              placeholder="Search by Therapist name..." className="w-full outline-none text-sm"
             />
           </div>
         </div>
