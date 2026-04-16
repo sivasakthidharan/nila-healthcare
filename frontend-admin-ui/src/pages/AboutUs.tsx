@@ -18,8 +18,7 @@ export default function AboutUs() {
             The Story of <span className="italic">Oppam</span>
           </h2>
           <p className="text-gray-700 leading-relaxed text-sm">
-            Once upon a time in Kasaragod, there were two friends...
-            (Replace with your real content)
+           Once upon a time in Kasaragod, there were two friends—one an engineering dropout and the other a B.Tech grad. You know the type: the B.Tech grad who does everything but engineering. With big ideas and a tendency to dive into projects, these two were self-proclaimed “ideologists” (translation: they had tons of ideas and maybe a few too many failed ventures). But every flop taught them something new. One day, over endless discussions, they realized the true impact of mental health—something often overlooked. So, they turned to another Kasaragodian in their circle, a passionate social psychologist. Over chai and wild brainstorming sessions, the pieces fell into place, and Oppam was born. Oppam isn’t just a platform. It’s a movement born out of the passion, purpose and progress. Against all odds, they’re proving that brilliance, heart, and change can come from anywhere—even from a little town like Kasaragod. Born in 2023, Oppam was founded on a simple yet groundbreaking idea: to create an online mental health platform that truly welcomes everyone, regardless of their socio-demographic background, beliefs, or income level. We are Kerala’s first youth-built mental health initiative, built to be inclusive, accessible, and genuinely helpful to all.
           </p>
 
           <button className="mt-4 bg-black text-white px-4 py-2 rounded-full text-sm">
@@ -29,7 +28,7 @@ export default function AboutUs() {
 
         {/* IMAGE */}
         <img
-          src="/images/story.png"
+          src="/Layer_1.svg"
           alt="story"
           className="w-full max-w-md mx-auto"
         />
@@ -64,7 +63,7 @@ export default function AboutUs() {
       <section className="bg-[#e7e2d9] px-6 md:px-20 py-16 grid md:grid-cols-2 gap-10 items-center">
         {/* LEFT IMAGE */}
         <img
-          src="/images/illustration.png"
+          src="/Group-251.svg"
           alt="change"
           className="w-64 mx-auto"
         />
@@ -106,7 +105,7 @@ export default function AboutUs() {
 
           {/* PERSON 1 */}
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            <img src="/images/person1.png" className="w-60 mx-auto" />
+            <img src="/hawaz.webp" className="w-60 mx-auto" />
 
             <div>
               <h3 className="font-semibold">Brahm Hameez</h3>
@@ -131,14 +130,14 @@ Marketing Strategist | The Guy Who Asks the Tough Questions <br></br><br></br>
 Abdullah is an engineering dropout turned entrepreneur, he runs an educational startup and knows what it takes to build something from the ground up. At OPPAM, he’s the one who asks the questions no one else does, plays devil’s advocate when needed, and pushes ideas until they’re not just good..but great. With a sharp eye for strategy and a mind that never settles, Abdullah is shaping how OPPAM reaches people, making sure mental health support isn’t just available but actually connects. If there’s a better way to do something, he’ll find it. And if no one’s asking the right questions, he will.              </p>
             </div>
 
-            <img src="/images/person2.png" className="w-60 mx-auto" />
+            <img src="/Abdulla-1.webp" className="w-60 mx-auto" />
           </div>
 
           <hr />
 
           {/* PERSON 3 */}
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            <img src="/images/person3.png" className="w-60 mx-auto" />
+            <img src="/mubashira-1.webp" className="w-60 mx-auto" />
 
             <div>
               <h3 className="font-semibold">Mubashira Rahman</h3>
