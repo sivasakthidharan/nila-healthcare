@@ -10,6 +10,25 @@ const services = [
 export default function SupportSection() {
   return (
     <section className="bg-gray-100 py-16 text-center">
+
+
+ <div className="max-w-6xl mx-auto">
+        {/* VIDEO PLAYER - added before the heading */}
+        <div className="mb-10 rounded-xl overflow-hidden shadow-lg">
+          <video
+            className="w-full h-auto"
+            controls
+            poster="/video-poster.jpg"   // Replace with your poster image path
+            preload="metadata"
+          >
+            <source src="/web-re-01.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          {/* Optional: video duration indicator (like 0:00/1:21) can be shown by the browser controls */}
+        </div>
+        </div>
+
+
       <h2 className="text-3xl md:text-4xl font-bold mb-12">
         How can we support you today?
       </h2>
