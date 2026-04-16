@@ -162,6 +162,16 @@ Mubashira is a therapist and an overthinker- so naturally, she overthinks every 
         <button className="bg-black text-white px-6 py-3 rounded-full">
           Join Us →
         </button>
+
+         {/* ---- IMAGE THAT SPANS HALF INTO FOOTER ---- */}
+        <div className="relative mt-12 overflow-visible">
+          <img
+            src="/Group-275.webp"   // replace with your actual image path
+            alt="bridge visual"
+            className="w-full max-w-4xl mx-auto block relative z-10"
+            style={{ marginBottom: '-50%' }}   // pushes half of the image into the footer
+          />
+        </div>
       </section>
 
     </>

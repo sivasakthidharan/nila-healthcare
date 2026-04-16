@@ -214,6 +214,7 @@
 //     </footer>
 //   );
 // }
+
 import { FaInstagram, FaFacebook, FaLinkedin } from "react-icons/fa";
 
 export default function PublicFooter() {

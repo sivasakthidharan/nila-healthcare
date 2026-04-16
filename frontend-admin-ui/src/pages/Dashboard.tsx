@@ -45,6 +45,7 @@ export default function Dashboard() {
       .then((res) => res.json())
       //.then((data) => setActivities(data))
               .then((data) => {
+                console.log("🔥 Activity API:", data); 
                  if (!Array.isArray(data)) {
                    console.error("Invalid activity API:", data);
                       return;
