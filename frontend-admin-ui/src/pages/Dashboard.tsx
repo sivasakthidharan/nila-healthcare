@@ -43,7 +43,14 @@ export default function Dashboard() {
   useEffect(() => {
     fetch(`${API_URL}/api/dashboard/activity`)
       .then((res) => res.json())
-      .then((data) => setActivities(data))
+      //.then((data) => setActivities(data))
+              .then((data) => {
+                 if (!Array.isArray(data)) {
+                   console.error("Invalid activity API:", data);
+                      return;
+                     }
+                     setActivities(data);
+                          })
       .catch((err) => console.error(err));
   }, []);
 

@@ -1063,6 +1063,12 @@ export default function Experts() {
       }
 
       const data = await res.json()
+
+      if (!Array.isArray(data)) {
+       console.error("Expected array, got:", data)
+        return
+        }
+        
       console.log("Received data:", data)
 
       const formatted = data.map((expert: any) => ({

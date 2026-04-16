@@ -65,21 +65,6 @@ const handleRequestOTP = async () => {
   }
 }
 
-  // const handleRequestOTP = () => {
-  //   if (!phone) {
-  //     setError('Please enter a valid phone number')
-  //     return
-  //   }
-  //   setShowOTP(true)
-  //   setError('')
-  //   // Simulate sending OTP
-  //   setTimeout(() => {
-  //     alert(`OTP (123456) has been sent to ${phone}. This is a demo.`)
-  //   }, 1000)
-  // }
-
-
-
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 relative overflow-hidden">
@@ -225,38 +210,6 @@ const handleRequestOTP = async () => {
           </div>
         </form>
       </div>
-
-      {/* Add animation styles */}
-      {/* <style jsx>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.5s ease-out;
-        }
-      `}</style> */}
     </div>
   )
 }
