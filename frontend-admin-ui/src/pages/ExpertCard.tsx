@@ -1,6 +1,16 @@
 import { Calendar, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ExpertCard({ expert }: any) {
+  const navigate = useNavigate();  
+
+  const handleBook = () => {
+    // Navigate to appointments page and pass the therapist name
+    navigate("/appointments", {
+      state: { selectedTherapist: expert.name }
+    });
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
 
@@ -56,7 +66,9 @@ export default function ExpertCard({ expert }: any) {
             </p>
           </div>
 
-          <button className="bg-black text-white px-4 py-1 rounded-full text-sm">
+          <button 
+          onClick={handleBook}
+          className="bg-black text-white px-4 py-1 rounded-full text-sm">
             Book →
           </button>
         </div>
