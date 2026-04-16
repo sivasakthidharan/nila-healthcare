@@ -34,7 +34,8 @@ router.post("/", async (req, res) => {
     } = req.body;
 
      // convert 5:00 AM → 05:00:00
-    const parsedTime = new Date(`1970-01-01 ${appointment_time}`).toTimeString().slice(0,8);
+    //const parsedTime = new Date(`1970-01-01 ${appointment_time}`).toTimeString().slice(0,8);
+    const parsedTime = new Date(`1970-01-01 ${appointment_time}`).toTimeString().slice(0, 8);
 
     const result = await pool.query(
       `INSERT INTO clinic_appointments
@@ -44,10 +45,15 @@ router.post("/", async (req, res) => {
       [patient_name, patient_id, phone, email, therapist_name, appointment_date, parsedTime, duration, status, type, notes]
     );
 
-    await pool.query(
-  `INSERT INTO activity_logs (action) VALUES ($1)`,
-  [`Appointment created for ${patient_name} with ${therapist_name}`]
-);
+      try{
+         await pool.query(
+         `INSERT INTO activity_logs (action) VALUES ($1)`,
+         [`Appointment created for ${patient_name} with ${therapist_name}`]
+      );
+      } catch (logErr) {
+      console.error("Activity log failed:", logErr);
+      // don't break main flow
+    }
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);
