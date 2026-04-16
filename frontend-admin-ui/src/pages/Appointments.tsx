@@ -149,10 +149,8 @@ const [otp, setOtp] = useState("");
 
 const handleVerifyOtp = async () => {
   try {
-
-        console.log("Verifying OTP:", otp);  
+    console.log("Verifying OTP:", otp);  
     console.log("Email used:", formData.email);
-
 
     // ✅ STEP 2: VERIFY OTP
     const res = await fetch(`${API_URL}/api/appointments/verify-otp`, {
@@ -166,22 +164,27 @@ const handleVerifyOtp = async () => {
       })
     });
 
-
-        const data = await res.json();   // ✅ AFTER FETCH
+    const data = await res.json();   // ✅ AFTER FETCH
     console.log("Verify OTP Response:", data);
 
-    if (!res.ok) throw new Error("Invalid OTP");
+    if (!res.ok) {
+      throw new Error(data.message || "OTP verification failed");
+    }
 
     // ✅ STEP 3: CREATE APPOINTMENT
-    await createAppointment();
-
-    alert("Appointment created successfully!");
-    setShowOtpModal(false);
-    setOtp("");          // clear OTP
-
-  } catch (err) {
-    console.error(err);
-    alert("Invalid or expired OTP");
+    try {
+      await createAppointment();
+      alert("Appointment created successfully!");
+      setShowOtpModal(false);
+      setOtp("");          // clear OTP
+    } catch (err) {
+      console.error("Create appointment error:",err);
+      alert("❌ Appointment failed after OTP verification");
+      //alert("Invalid or expired OTP");
+    }
+  } catch (err: any) {
+    console.error("OTP error:", err);
+    alert(err.message || "Invalid or expired OTP");
   }
 };
 
