@@ -40,7 +40,7 @@ export default function WorkStressPage() {
   useEffect(() => {
     const fetchExperts = async () => {
       try {
-        const res = await fetch(`${API_URL}/experts`);  // match backend endpoint
+        const res = await fetch(`${API_URL}/api/experts`);  // match backend endpoint
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         // Ensure data is an array

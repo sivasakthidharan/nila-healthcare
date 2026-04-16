@@ -34,7 +34,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 useEffect(() => {
   const fetchExperts = async () => {
     try {
-      const res = await fetch(`${API_URL}/experts`);
+      const res = await fetch(`${API_URL}/api/experts`);
       const data = await res.json();
 
       console.log("Experts from backend:", data);
