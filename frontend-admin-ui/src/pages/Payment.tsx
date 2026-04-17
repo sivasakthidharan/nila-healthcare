@@ -71,6 +71,7 @@ if (!(window as any).Razorpay) {
       );
 
         console.log("ORDER DATA:", data);
+        console.log("FULL ORDER:", data);
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY,
@@ -110,7 +111,7 @@ if (!(window as any).Razorpay) {
       };
 
       const rzp = new (window as any).Razorpay(options);
-      
+
         rzp.on("payment.failed", function (response: any) {
         console.error("PAYMENT FAILED:", response.error);
         alert(response.error.description);
