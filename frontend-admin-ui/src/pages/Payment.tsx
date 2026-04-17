@@ -70,6 +70,8 @@ if (!(window as any).Razorpay) {
         { amount, patientName, patientId }
       );
 
+        console.log("ORDER DATA:", data);
+
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY,
         amount: data.amount,
@@ -108,6 +110,12 @@ if (!(window as any).Razorpay) {
       };
 
       const rzp = new (window as any).Razorpay(options);
+      
+        rzp.on("payment.failed", function (response: any) {
+        console.error("PAYMENT FAILED:", response.error);
+        alert(response.error.description);
+        });
+
       rzp.open();
 
     } catch (err:any) {
