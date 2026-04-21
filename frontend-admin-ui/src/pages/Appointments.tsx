@@ -33,6 +33,7 @@ export default function Appointments() {
   const [logs, setLogs] = useState<string[]>([]);
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [therapists, setTherapists] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     patientName: '',
     patientId: '',
@@ -86,9 +87,28 @@ const fetchAppointments = async () => {
     setLoading(false);
   }
 };
-  
+
+const fetchExperts = async () => {
+  try {
+    const res = await fetch(`${API_URL}/api/experts`);
+
+    if (!res.ok) throw new Error("Failed to fetch experts");
+
+    const data = await res.json();
+    console.log("Experts:", data);
+
+    // adjust based on your backend response
+    const names = data.map((exp: any) => exp.name); 
+    setTherapists(names);
+
+  } catch (err) {
+    console.error("Error fetching experts:", err);
+  }
+};
+
     useEffect(() => {
-    fetchAppointments()
+    fetchAppointments();
+     fetchExperts(); 
   }, []);
 
 
@@ -292,14 +312,14 @@ const createAppointment = async () => {
     { label: 'Today', value: appointments.filter(a => a.date === new Date().toISOString().split('T')[0]).length, color: 'bg-purple-500' },
   ]
 
-  const therapists = [
-  "Dr. Manikandan",
-  "Dr. Sarah Wilson",
-  "Dr. Shenka",
-  "Dr. Renuka",
-  "Dr. Subramanian",
-  "Dr. Murugan"
-];
+//   const therapists = [
+//   "Dr. Manikandan",
+//   "Dr. Sarah Wilson",
+//   "Dr. Shenka",
+//   "Dr. Renuka",
+//   "Dr. Subramanian",
+//   "Dr. Murugan"
+// ];
 
   const generateTimeOptions = () => {
   const times = [];
@@ -430,20 +450,21 @@ const handleExport = () => {
               <label className="block text-sm font-medium mb-1">
                 Therapist
               </label>
-            <select
-              className="w-full border p-2 rounded"
-              value={formData.therapistName}
-              onChange={(e) =>
-              setFormData({ ...formData, therapistName: e.target.value })
-               }  >
-            <option value="">Select Therapist</option>
-            { therapists.map((name, index) => (
-              <option key={index} value={name}>
-              {name}
-            </option>
-               ))}
-            </select>
+              <select
+                className="w-full border p-2 rounded"
+                value={formData.therapistName}
+                onChange={(e) =>
+                setFormData({ ...formData, therapistName: e.target.value })
+                 }  >
+                <option value="">Select Therapist</option>
+                {therapists.map((name, index) => (
+                <option key={index} value={name}>
+                 {name}
+                </option>
+                 ))}
+              </select>
             </div>
+
             <div className="mb-3">
                   <label className="block text-sm font-medium mb-1">
                     Appointment Date
