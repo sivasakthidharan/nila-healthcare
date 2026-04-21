@@ -97,7 +97,7 @@ export default function HomeExperts() {
           nextAvailable: e.next_available || "",
           avatar: e.avatar
             ? `${API_URL}/uploads/${e.avatar}`
-            : `https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}`
+            : `https://ui-avatars.com/api/?name=${encodeURIComponent(e.name)}&background=0ea5e9&color=fff`,
         }));
 
         setExperts(formatted);
@@ -107,10 +107,7 @@ export default function HomeExperts() {
 
   return (
     <section className="py-16 bg-gray-100">
-      <h2 className="text-2xl font-bold text-center mb-10">
-        Our Experts
-      </h2>
-
+      <h2 className="text-2xl font-bold text-center mb-10"> Our Experts </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 max-w-6xl mx-auto">
         {experts.map((exp) => (
           <ExpertCard key={exp.id} expert={exp} />
