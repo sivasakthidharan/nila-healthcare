@@ -64,21 +64,6 @@ useEffect(() => {
     setActiveFaq(activeFaq === index ? null : index);
   };
 
-
-
-
-  // Therapists data
-  // const therapists = [
-  //   { name: "Marin Susan", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Leena Mary Mathew", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Aswathy", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Thalassa Nijumudheen", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Thejas Ela George", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Angitha Mariya Wilson", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Joshua Joseph", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" },
-  //   { name: "Sneha Sasikumar", title: "Consultant Psychologist", nextVisit: "Today, 12:15 PM" }
-  // ];
-
   // Conditions data (organized in rows as shown)
   const conditionsRow1 = ["Anxiety & Stress", "Relationship Issues", "Queer Affirmative Therapy", "Parenting & Child Behavioral Issues"];
   const conditionsRow2 = ["Depression & Mood Disorders", "Premarital Assistance", "Addiction & Substance Abuse"];
