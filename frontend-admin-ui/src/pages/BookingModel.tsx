@@ -539,69 +539,140 @@ export default function BookingModal({ isOpen, onClose, expert }: Props) {
 
   const totalAmount = (booking.package?.price || 0) - discount;
 
-  const handleSubmit = async () => {
-    const { serviceType, package: pkg, expertId, expertName, date, timeSlot, patient } = booking;
-    if (!serviceType || !pkg || !date || !timeSlot) return;
-    if (!patient.name || !patient.email || !patient.whatsapp || !patient.mode) return;
+//   const handleSubmit = async () => {
+//     const { serviceType, package: pkg, expertId, expertName, date, timeSlot, patient } = booking;
+//     if (!serviceType || !pkg || !date || !timeSlot) return;
+//     if (!patient.name || !patient.email || !patient.whatsapp || !patient.mode) return;
 
-    setSubmitting(true);
-    try {
-      const payload = {
-        patient_name: patient.name,
-        patient_email: patient.email,
-        patient_whatsapp: patient.whatsapp,
-        therapist_name: expertName,
-        appointment_date: format(date, "yyyy-MM-dd"),
-        appointment_time: timeSlot.split(" - ")[0], // e.g., "1:15 PM"
-        duration: pkg.sessions * 60, // total minutes for all sessions
-        status: "confirmed",
-        type: serviceType,
-        notes: `Package: ${pkg.name}, Sessions: ${pkg.sessions}, Therapy mode: ${patient.mode}, Referral: ${patient.referral || "N/A"}, Coupon discount: ₹${discount}`,
-        phone: patient.whatsapp,
-        email: patient.email,
-        total_price: totalAmount,
-        sessions_count: pkg.sessions,
-        coupon_discount: discount
-      };
+//     setSubmitting(true);
+//     try {
+//       const payload = {
+//         patient_name: patient.name,
+//         patient_email: patient.email,
+//         patient_whatsapp: patient.whatsapp,
+//         therapist_name: expertName,
+//         appointment_date: format(date, "yyyy-MM-dd"),
+//         appointment_time: timeSlot.split(" - ")[0], // e.g., "1:15 PM"
+//         duration: pkg.sessions * 60, // total minutes for all sessions
+//         status: "confirmed",
+//         type: serviceType,
+//         notes: `Package: ${pkg.name}, Sessions: ${pkg.sessions}, Therapy mode: ${patient.mode}, Referral: ${patient.referral || "N/A"}, Coupon discount: ₹${discount}`,
+//         phone: patient.whatsapp,
+//         email: patient.email,
+//         total_price: totalAmount,
+//         sessions_count: pkg.sessions,
+//         coupon_discount: discount
+//       };
 
-      const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
-      const response = await fetch(`${API_BASE}/api/appointments/book`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+//       const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+//       const response = await fetch(`${API_BASE}/api/appointments/book`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(payload),
+//       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Booking failed");
-      }
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.error || "Booking failed");
+//       }
 
-      const result = await response.json();
-      alert(result.message || "Booking submitted successfully!");
-      onClose();
-      // Reset state
-      setStep(1);
-      setBooking({
-        serviceType: null,
-        package: null,
-        expertId: expert.id,
-        expertName: expert.name,
-        date: null,
-        timeSlot: null,
-        patient: { name: "", email: "", whatsapp: "", mode: "", referral: "" },
-      });
-      setCouponCode("");
-      setDiscount(0);
-      setCouponApplied(false);
-    } catch (err: any) {
-      console.error(err);
-      alert(err.message || "Booking failed. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+//       const result = await response.json();
+//       alert(result.message || "Booking submitted successfully!");
+//       onClose();
+//       // Reset state
+//       setStep(1);
+//       setBooking({
+//         serviceType: null,
+//         package: null,
+//         expertId: expert.id,
+//         expertName: expert.name,
+//         date: null,
+//         timeSlot: null,
+//         patient: { name: "", email: "", whatsapp: "", mode: "", referral: "" },
+//       });
+//       setCouponCode("");
+//       setDiscount(0);
+//       setCouponApplied(false);
+//     } catch (err: any) {
+//       console.error(err);
+//       alert(err.message || "Booking failed. Please try again.");
+//     } finally {
+//       setSubmitting(false);
+//     }
+//   };
+
+
+
 
   // Calendar helpers
+ 
+
+  const handleSubmit = async () => {
+  const { serviceType, package: pkg, expertId, expertName, date, timeSlot, patient } = booking;
+  if (!serviceType || !pkg || !date || !timeSlot) return;
+  if (!patient.name || !patient.email || !patient.whatsapp || !patient.mode) return;
+
+  setSubmitting(true);
+  try {
+    // Parse time from slot (e.g., "1:15 PM - 2:15 PM" -> "1:15 PM")
+    const startTime = timeSlot.split(" - ")[0];
+    // Convert to 24-hour format if needed, or keep as is – your backend accepts string like "1:15 PM"
+    
+    // Prepare notes with package, sessions, discount, referral, mode
+    const notes = `Package: ${pkg.name}, Sessions: ${pkg.sessions}, Mode: ${patient.mode}, Referral: ${patient.referral || "N/A"}, Coupon discount: ₹${discount}, Total paid: ₹${totalAmount}`;
+
+    const payload = {
+      patient_name: patient.name,
+      phone: patient.whatsapp,
+      email: patient.email,
+      therapist_name: expertName,
+      appointment_date: format(date, "yyyy-MM-dd"),
+      appointment_time: startTime,          // e.g., "1:15 PM"
+      duration: pkg.sessions * 60,          // total minutes (e.g., 4 sessions * 60 = 240)
+      status: "confirmed",
+      type: serviceType,                    // "individual" or "couple"
+      notes: notes,
+      patient_id: null,                     // optional, you can set later if user logged in
+    };
+
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    const response = await fetch(`${API_BASE}/api/appointments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Booking failed");
+    }
+
+    const result = await response.json();
+    alert("Appointment booked successfully!");
+    onClose();
+    // Reset state
+    setStep(1);
+    setBooking({
+      serviceType: null,
+      package: null,
+      expertId: expert.id,
+      expertName: expert.name,
+      date: null,
+      timeSlot: null,
+      patient: { name: "", email: "", whatsapp: "", mode: "", referral: "" },
+    });
+    setCouponCode("");
+    setDiscount(0);
+    setCouponApplied(false);
+  } catch (err: any) {
+    console.error(err);
+    alert(err.message || "Booking failed. Please try again.");
+  } finally {
+    setSubmitting(false);
+  }
+};
+ 
+ 
   const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
   const days = Array.from({ length: 42 }, (_, i) => addDays(startDate, i));
   const changeWeek = (dir: "prev" | "next") => {
