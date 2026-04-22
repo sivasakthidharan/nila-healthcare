@@ -286,61 +286,108 @@ const handleSubmit = async () => {
       description: "Appointment Booking",
       order_id: orderData.id,
 
-      handler: async function (response: any) {
+//       handler: async function (response: any) {
 
-          // ✅ FAKE SUCCESS (skip verification)
-  console.log("Fake Payment Success:", response);
-//          // ✅ STEP 1: VERIFY PAYMENT
-//   const verifyRes = await fetch(`${API_BASE}/api/payment/verify-payment`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       razorpay_order_id: response.razorpay_order_id,
-//       razorpay_payment_id: response.razorpay_payment_id,
-//       razorpay_signature: response.razorpay_signature,
-//       patientName: patient.name,
-//       patientId: patient.whatsapp,
-//     }),
-//   });
+//           // ✅ FAKE SUCCESS (skip verification)
+//   console.log("Fake Payment Success:", response);
+// //          // ✅ STEP 1: VERIFY PAYMENT
+// //   const verifyRes = await fetch(`${API_BASE}/api/payment/verify-payment`, {
+// //     method: "POST",
+// //     headers: { "Content-Type": "application/json" },
+// //     body: JSON.stringify({
+// //       razorpay_order_id: response.razorpay_order_id,
+// //       razorpay_payment_id: response.razorpay_payment_id,
+// //       razorpay_signature: response.razorpay_signature,
+// //       patientName: patient.name,
+// //       patientId: patient.whatsapp,
+// //     }),
+// //   });
 
-//   const verifyData = await verifyRes.json();
+// //   const verifyData = await verifyRes.json();
 
-//   if (!verifyData.success) {
-//     alert("❌ Payment verification failed!");
-//     return;
-//   }
-        // 🔹 Payment success
+// //   if (!verifyData.success) {
+// //     alert("❌ Payment verification failed!");
+// //     return;
+// //   }
+//         // 🔹 Payment success
 
-        // Now save booking AFTER payment success
-        const payload = {
-          patient_name: patient.name,
-          phone: patient.whatsapp,
-          email: patient.email,
-          therapist_name: expertName,
-          appointment_date: format(date, "yyyy-MM-dd"),
-          appointment_time: timeSlot.split(" - ")[0],
-          duration: pkg.sessions * 60,
-          status: "confirmed",
-          type: serviceType,
-          notes: `Payment ID: ${response.razorpay_payment_id}`,
-        };
+//         // Now save booking AFTER payment success
+//         const payload = {
+//           patient_name: patient.name,
+//           phone: patient.whatsapp,
+//           email: patient.email,
+//           therapist_name: expertName,
+//           appointment_date: format(date, "yyyy-MM-dd"),
+//           appointment_time: timeSlot.split(" - ")[0],
+//           duration: pkg.sessions * 60,
+//           status: "confirmed",
+//           type: serviceType,
+//           notes: `Payment ID: ${response.razorpay_payment_id}`,
+//         };
 
-        const saveRes = await fetch(`${API_BASE}/api/appointments`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+//         const saveRes = await fetch(`${API_BASE}/api/appointments`, {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify(payload),
+//         });
 
-        if (!saveRes.ok) {
-          alert("Payment success, but booking failed!");
-          return;
-        }
+//         if (!saveRes.ok) {
+//           alert("Payment success, but booking failed!");
+//           return;
+//         }
 
-        alert("Payment successful & appointment booked!");
+//         alert("Payment successful & appointment booked!");
 
-        onClose();
-      },
+//         onClose();
+//       },
 
+
+handler: async function (response: any) {
+  try {
+    // 1. Verify payment signature
+    const verifyRes = await fetch(`${API_BASE}/api/payment/verify-payment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+        patientName: patient.name,
+        patientId: patient.whatsapp,
+      }),
+    });
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success) {
+      alert("Payment verification failed! Please contact support.");
+      return;
+    }
+
+    // 2. Payment verified – save appointment
+    const payload = {
+      patient_name: patient.name,
+      phone: patient.whatsapp,
+      email: patient.email,
+      therapist_name: expertName,
+      appointment_date: format(date, "yyyy-MM-dd"),
+      appointment_time: timeSlot.split(" - ")[0],
+      duration: pkg.sessions * 60,
+      status: "confirmed",
+      type: serviceType,
+      notes: `Payment ID: ${response.razorpay_payment_id}`,
+    };
+    const saveRes = await fetch(`${API_BASE}/api/appointments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!saveRes.ok) throw new Error("Booking save failed");
+    alert("Payment successful & appointment booked!");
+    onClose();
+  } catch (err) {
+    console.error(err);
+    alert("Payment succeeded but booking failed. Please contact support.");
+  }
+},
       prefill: {
         name: patient.name,
         email: patient.email,
