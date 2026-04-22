@@ -290,6 +290,7 @@ const corsOptions = {
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["x-rtb-fingerprint-id", "request-id"],
   credentials: true,
 };
 
