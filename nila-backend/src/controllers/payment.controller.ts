@@ -9,27 +9,49 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 });
 
+// export const createOrder = async (req: Request, res: Response) => {
+//   try {
+//      console.log("ENV CHECK:", process.env.RAZORPAY_KEY_ID);
+//      const { patientName, patientId } = req.body;
+
+//       //  FIXED amount (avoid frontend tampering)
+//      const amount = 200;
+//        //  Validation
+//     if (!patientName || !patientId) {
+//          return res.status(400).json({ message: "Missing required fields" });
+//         }
+
+//          // Create Razorpay order
+//     const order = await razorpay.orders.create({
+//       amount: amount * 100,
+//       currency: "INR",
+//       receipt: "receipt_" + Date.now(),
+//       notes: {
+//         patientName,
+//         patientId,
+//       },
+//     });
+
+//     res.json(order);
+//   } catch (error) {
+//     console.error("CREATE ORDER ERROR:", error);
+//     res.status(500).json({ message: "Error creating order" });
+//   }
+// };
+
 export const createOrder = async (req: Request, res: Response) => {
   try {
-     console.log("ENV CHECK:", process.env.RAZORPAY_KEY_ID);
-     const { patientName, patientId } = req.body;
+    const { amount, patientName, patientId } = req.body;   // amount is in paise
 
-      //  FIXED amount (avoid frontend tampering)
-     const amount = 200;
-       //  Validation
-    if (!patientName || !patientId) {
-         return res.status(400).json({ message: "Missing required fields" });
-        }
+    if (!amount || !patientName || !patientId) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
 
-         // Create Razorpay order
     const order = await razorpay.orders.create({
-      amount: amount * 100,
+      amount: Number(amount),          // already in paise
       currency: "INR",
       receipt: "receipt_" + Date.now(),
-      notes: {
-        patientName,
-        patientId,
-      },
+      notes: { patientName, patientId },
     });
 
     res.json(order);
@@ -38,7 +60,6 @@ export const createOrder = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error creating order" });
   }
 };
-
 export const cashPayment = async (req: Request, res: Response) => {
   try {
     console.log("BODY:", req.body); 
