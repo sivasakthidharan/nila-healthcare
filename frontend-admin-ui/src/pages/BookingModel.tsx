@@ -287,6 +287,26 @@ const handleSubmit = async () => {
       order_id: orderData.id,
 
       handler: async function (response: any) {
+
+         // ✅ STEP 1: VERIFY PAYMENT
+  const verifyRes = await fetch(`${API_BASE}/api/payment/verify-payment`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_signature: response.razorpay_signature,
+      patientName: patient.name,
+      patientId: patient.whatsapp,
+    }),
+  });
+
+  const verifyData = await verifyRes.json();
+
+  if (!verifyData.success) {
+    alert("❌ Payment verification failed!");
+    return;
+  }
         // 🔹 Payment success
 
         // Now save booking AFTER payment success
