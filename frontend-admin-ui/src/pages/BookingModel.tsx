@@ -265,6 +265,9 @@ const handleSubmit = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         amount: totalAmount * 100, // paisa
+            //newly add
+        patientName: patient.name,
+    patientId: patient.whatsapp,
       }),
     });
 
