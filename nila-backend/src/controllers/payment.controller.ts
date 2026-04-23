@@ -65,10 +65,9 @@ export const createOrder = async (req: Request, res: Response) => {
 export const cashPayment = async (req: Request, res: Response) => {
   try {
     console.log("BODY:", req.body); 
-    const { patientName, patientId } = req.body;
-    const amount = 200;
+    const { patientName, patientId, amount } = req.body;
 
-    if (!patientName || !patientId) {
+    if (!patientName || !patientId || !amount) {
       return res.status(400).json({ message: "Missing fields" });
     }
 
