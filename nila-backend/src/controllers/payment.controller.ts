@@ -15,7 +15,7 @@ const razorpay = new Razorpay({
 //      const { patientName, patientId } = req.body;
 
 //       //  FIXED amount (avoid frontend tampering)
-//      const amount = 200;
+//      const amount = 50;
 //        //  Validation
 //     if (!patientName || !patientId) {
 //          return res.status(400).json({ message: "Missing required fields" });
@@ -41,6 +41,8 @@ const razorpay = new Razorpay({
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
+        console.log("CREATE ORDER BODY:", req.body);
+
     const { amount, patientName, patientId } = req.body;   // amount is in paise
 
     if (!amount || !patientName || !patientId) {
