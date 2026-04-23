@@ -272,7 +272,8 @@ const handleSubmit = async () => {
     });
 
     const orderData = await orderRes.json();
-
+    
+      console.log("ORDER DATA:", orderData);
     if (!orderData.id) {
       throw new Error("Failed to create Razorpay order");
     }
