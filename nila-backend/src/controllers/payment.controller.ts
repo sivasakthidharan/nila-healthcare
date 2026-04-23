@@ -62,40 +62,96 @@ export const createOrder = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error creating order" });
   }
 };
+
+
 export const cashPayment = async (req: Request, res: Response) => {
   try {
-    console.log("BODY:", req.body); 
+    console.log("Cash payment request body:", req.body);
     const { patientName, patientId, amount } = req.body;
 
-    if (!patientName || !patientId || !amount) {
-      return res.status(400).json({ message: "Missing fields" });
+    // Validation
+    if (!patientName || !patientId || amount === undefined || amount === null) {
+      return res.status(400).json({ 
+        message: "Missing required fields: patientName, patientId, amount" 
+      });
     }
 
-    console.log("Cash payment for:", patientName, patientId);
+    // Ensure amount is a number (could be sent as string)
+    const numericAmount = Number(amount);
+    if (isNaN(numericAmount)) {
+      return res.status(400).json({ message: "Amount must be a valid number" });
+    }
 
-    // Save in DB
-    await pool.query(
-      `INSERT INTO payments 
-       (patient_name, patient_id, amount, payment_id, order_id, status, payment_method)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [
-        patientName,
-        patientId,
-        amount,
-        null,   // no payment id
-        null,   // no order id
-        "PENDING",
-        "CASH"
-      ]
-    );
+    console.log(`Processing cash payment for ${patientName} (${patientId}) of ₹${numericAmount}`);
 
-    res.json({ success: true });
+    // Insert payment record – use SUCCESS status because cash is considered paid on booking
+    const query = `
+      INSERT INTO payments 
+        (patient_name, patient_id, amount, payment_id, order_id, status, payment_method, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+      RETURNING id
+    `;
+    
+    const values = [
+      patientName,
+      patientId,
+      numericAmount,
+      null,               // payment_id
+      null,               // order_id
+      "SUCCESS",          // status (cash = immediate success)
+      "CASH"
+    ];
 
-  } catch (error) {
-    console.error("CASH PAYMENT ERROR:", error);
-    res.status(500).json({ message: "Cash payment failed" });
+    const result = await pool.query(query, values);
+    
+    console.log(`Cash payment recorded with id ${result.rows[0].id}`);
+    res.json({ success: true, paymentId: result.rows[0].id });
+
+  } catch (error: any) {
+    console.error("CASH PAYMENT ERROR DETAILS:", error);
+    // Send a meaningful error response
+    res.status(500).json({ 
+      message: "Cash payment failed",
+      error: error.message,
+      detail: error.code // PostgreSQL error code if any
+    });
   }
 };
+
+// export const cashPayment = async (req: Request, res: Response) => {
+//   try {
+//     console.log("BODY:", req.body); 
+//     const { patientName, patientId, amount } = req.body;
+
+//     if (!patientName || !patientId || !amount) {
+//       return res.status(400).json({ message: "Missing fields" });
+//     }
+
+//     console.log("Cash payment for:", patientName, patientId);
+
+//     // Save in DB
+//     await pool.query(
+//       `INSERT INTO payments 
+//        (patient_name, patient_id, amount, payment_id, order_id, status, payment_method)
+//        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+//       [
+//         patientName,
+//         patientId,
+//         amount,
+//         null,   // no payment id
+//         null,   // no order id
+//         "PENDING",
+//         "CASH"
+//       ]
+//     );
+
+//     res.json({ success: true });
+
+//   } catch (error) {
+//     console.error("CASH PAYMENT ERROR:", error);
+//     res.status(500).json({ message: "Cash payment failed" });
+//   }
+// };
 
 export const verifyPayment = async (req: Request, res: Response) => {
   try {
