@@ -91,6 +91,8 @@ function App() {
             <Route path="concern/parenting" element={<ParentingPage />} />
             <Route path="/experts" element={<Experts />} />
               <Route path="/appointments" element={<Appointments />} />
+             <Route path="appointments" element={<Appointments />} />
+
           </Route>
 
           {/* ✅ Login */}
