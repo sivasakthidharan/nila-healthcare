@@ -28,37 +28,83 @@ import ParentingPage from './pages/Session9';
 import FollowUpPage from './pages/Follow-up';
 import './App.css'
 
+// function App() {
+//   return (
+//     <BrowserRouter>
+//       <AuthProvider>
+//         <Routes>
+//           <Route path="/login" element={<Login />} />
+//           <Route path="/" element={<ProtectedRoute />}>
+//             <Route element={<MainLayout />}>
+//               <Route index element={<Home/>} />
+//               <Route path="dashboard" element={<Dashboard />} />
+//               <Route path="users" element={<Users />} />
+//               <Route path="experts" element={<Experts />} />
+//               <Route path="appointments" element={<Appointments />} />
+//               <Route path="payments" element={<Payment />} />
+//               <Route path="about-us" element={<AboutUs />} />
+//               <Route path="careers" element={<Careers />} />
+//               <Route path="service/couple" element={<CoupleTherapy />} />
+//               <Route path="service/sexual-health" element={<SexualHealth />} />
+//               <Route path="service/individual" element={<IndividualTherapy/>} />
+//               <Route path="concern/anxiety" element={<AnxietyStressPage/>} />
+//               <Route path="service/followup" element={<FollowUpPage/>} />
+//               <Route path="concern/depression" element={<DepressionPage/>} />
+//               <Route path="concern/trauma" element={<TraumaPage/>} />
+//               <Route path="concern/relationship" element={<RelationshipPage/>} />
+//               <Route path="concern/grief" element={<GriefPage/>} />
+//               <Route path="concern/anger" element={<AngerManagementPage/>} />
+//               <Route path="concern/queer" element={<QueerAffirmativePage/>} />
+//               <Route path="concern/work-stress" element={<WorkStressPage/>} />
+//               <Route path="concern/parenting" element={<ParentingPage/>} />
+//             </Route>
+//           </Route>
+//         </Routes>
+//       </AuthProvider>
+//     </BrowserRouter>
+//   )
+// }
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+
+          {/* ✅ Public Route */}
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="about-us" element={<AboutUs />} />
+            <Route path="careers" element={<Careers />} />
+            <Route path="service/couple" element={<CoupleTherapy />} />
+            <Route path="service/sexual-health" element={<SexualHealth />} />
+            <Route path="service/individual" element={<IndividualTherapy />} />
+            <Route path="service/followup" element={<FollowUpPage />} />
+            <Route path="concern/anxiety" element={<AnxietyStressPage />} />
+            <Route path="concern/depression" element={<DepressionPage />} />
+            <Route path="concern/trauma" element={<TraumaPage />} />
+            <Route path="concern/relationship" element={<RelationshipPage />} />
+            <Route path="concern/grief" element={<GriefPage />} />
+            <Route path="concern/anger" element={<AngerManagementPage />} />
+            <Route path="concern/queer" element={<QueerAffirmativePage />} />
+            <Route path="concern/work-stress" element={<WorkStressPage />} />
+            <Route path="concern/parenting" element={<ParentingPage />} />
+          </Route>
+
+          {/* ✅ Login */}
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<ProtectedRoute />}>
+
+          {/* 🔒 Protected Routes ONLY */}
+          <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
-              <Route index element={<Home/>} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="users" element={<Users />} />
-              <Route path="experts" element={<Experts />} />
-              <Route path="appointments" element={<Appointments />} />
-              <Route path="payments" element={<Payment />} />
-              <Route path="about-us" element={<AboutUs />} />
-              <Route path="careers" element={<Careers />} />
-              <Route path="service/couple" element={<CoupleTherapy />} />
-              <Route path="service/sexual-health" element={<SexualHealth />} />
-              <Route path="service/individual" element={<IndividualTherapy/>} />
-              <Route path="concern/anxiety" element={<AnxietyStressPage/>} />
-              <Route path="service/followup" element={<FollowUpPage/>} />
-              <Route path="concern/depression" element={<DepressionPage/>} />
-              <Route path="concern/trauma" element={<TraumaPage/>} />
-              <Route path="concern/relationship" element={<RelationshipPage/>} />
-              <Route path="concern/grief" element={<GriefPage/>} />
-              <Route path="concern/anger" element={<AngerManagementPage/>} />
-              <Route path="concern/queer" element={<QueerAffirmativePage/>} />
-              <Route path="concern/work-stress" element={<WorkStressPage/>} />
-              <Route path="concern/parenting" element={<ParentingPage/>} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/experts" element={<Experts />} />
+              <Route path="/appointments" element={<Appointments />} />
+              <Route path="/payments" element={<Payment />} />
             </Route>
           </Route>
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>

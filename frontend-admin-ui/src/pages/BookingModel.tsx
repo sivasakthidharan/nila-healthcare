@@ -544,7 +544,7 @@
 // }
 
 
-// components/BookingModal.tsx (with Cash & Online payment options)// components/BookingModal.tsx (with Cash & Online payment options)
+// components/BookingModal.tsx (with Cash & Online payment options)
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { format, addDays, startOfWeek, addWeeks, subWeeks, isSameDay } from "date-fns";
