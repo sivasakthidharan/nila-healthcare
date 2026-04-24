@@ -617,7 +617,7 @@ export default function BookingModal({ isOpen, onClose, expert }: Props) {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"cash" | "online">("online");
+  const [paymentMethod, setPaymentMethod] = useState<"cash" | "online" | null>(null) ;
 
   // Calendar helpers
   const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
@@ -826,6 +826,12 @@ export default function BookingModal({ isOpen, onClose, expert }: Props) {
 
   // Central submit – decides based on paymentMethod
   const handleSubmit = () => {
+
+    if (!paymentMethod) {
+    alert("Please select a payment method");
+    return;
+  }
+
     if (paymentMethod === "cash") {
       handleCashPayment();
     } else {
