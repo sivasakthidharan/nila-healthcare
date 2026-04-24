@@ -89,6 +89,8 @@ function App() {
             <Route path="concern/queer" element={<QueerAffirmativePage />} />
             <Route path="concern/work-stress" element={<WorkStressPage />} />
             <Route path="concern/parenting" element={<ParentingPage />} />
+            <Route path="/experts" element={<Experts />} />
+              <Route path="/appointments" element={<Appointments />} />
           </Route>
 
           {/* ✅ Login */}
@@ -99,8 +101,7 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/experts" element={<Experts />} />
-              <Route path="/appointments" element={<Appointments />} />
+              
               <Route path="/payments" element={<Payment />} />
             </Route>
           </Route>
